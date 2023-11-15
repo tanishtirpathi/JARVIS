@@ -132,8 +132,10 @@ INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 OVERSENSITIVE = 15.0/INPUT_BLOCK_TIME                    
 UNDERSENSITIVE = 120.0/INPUT_BLOCK_TIME 
 MAX_TAP_BLOCKS = 0.15/INPUT_BLOCK_TIME
-
-
+openai.api_key = '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'
+engine = pyttsx3.init('sapi5')
+voices = engine.getProperty('voices')
+engine.setProperty('voices',voices[2].id)
 def get_rms( block ):
     count = len(block)/2
     format = "%dh"%(count)
@@ -223,10 +225,6 @@ def Tester():
             print("Hi welcome Mr Tanish " )
             break
 Tester()
-openai.api_key = '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'
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-engine.setProperty('voices',voices[2].id)
 def speak(audio):
    engine.say(audio)
    engine.runAndWait()
@@ -301,10 +299,11 @@ def ai(prompt,open_ai = None):
     elif 'how are you ' in prompt:
         speak("i am fine boss what about you") 
         print("my name is friday boss")
+    
     else:
         pass
     print(generated_text)
-    speak(f"ok boss{generated_text} ")
+    speak(f"yes{generated_text} ")
     t = takecommand().lower()
     if 'speak'in t or 'bolo' in t or 'bol' in t:
         speak("hi")
@@ -323,14 +322,14 @@ def location():
     country = geo_d['country']
     speak(f"sir you are in{state,country}")
     print(f"sir you are in{state,country}")
-    
 if __name__ == "__main__": 
     wishMe()
     while  True:
         query = takecommand().lower()
-        if 'wikipedia' in query:
+        if 'wikipedia' in query or 'tell me ' in query:
             speak('searching...')
             query = query.replace("wikipedia","")
+            query = query.replace("tell me about","")
             query = query.replace("search","")
             query = query.replace("jarvis","")
             query = query.replace("kro","")
@@ -344,7 +343,7 @@ if __name__ == "__main__":
             query = query.replace("friday","")  
             query = query.replace("Friday","") 
             ai(prompt=query)
-        elif 'google search' in query:       
+        elif 'google ' in query:       
             query = query.replace("jarvis","")
             query = query.replace("google search","")
             query = query.replace("google","")
@@ -501,13 +500,14 @@ if __name__ == "__main__":
             speak('My name is JARVIS boss')
         elif 'who made you' in query:
             speak ("I was created by Mr.Tanish sharma")
-        elif "show my private files" in query or "enter prior mode" in query or "private" in query:
+        elif "mark 2" in query or "mark two" in query or "mark-2" in query:
             speak("voice activation required")
             e_passcode = takecommand().lower()
-            v_passcode = "ironman"
+            v_passcode = "iron man"
             if e_passcode == v_passcode:
+                speak("acess granted")
                 speak("Welcome! Mr.Tanish")
-                webbrowser.open("")
+                webbrowser.open("https://github.com/tanishtirpathi/JARVIS/blob/main/friday_ai.py") 
             else:
                 speak("access decline")
         elif 'alarm' in query:
@@ -669,11 +669,9 @@ if __name__ == "__main__":
                 os.startfile("C:\\jarvis ke kiche hua screenshot")
                 speak("here is the file sir")
             else:
-                pass
-            
-            
-            
-            
+                pass          
+        elif 'full screen' in query:
+            keyboard.press('f')
 '''
 def wolfram(query):
     api_key = "TL4UQG-TQLVJ6RWY4"   
@@ -794,4 +792,10 @@ speak("please speak the password to start me ")
                 message = content,
                 timeout = 50)
            '''
+
+   
+   
+   
+   
+   
    
