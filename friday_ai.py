@@ -23,15 +23,13 @@ import psutil
 import os
 #from pygame import mixer
 from plyer import notification
-'''import googletrans
-from googletrans import Translator'''
 import random
 import wikipedia as googleScrap
 import smtplib
 import requests
-'''
+from googletrans import Translator
 from time import sleep
-
+'''
 dictapp = {"commandprompt":"cmd","vscode":"code","chrome": "chrome"}
 
 
@@ -122,7 +120,7 @@ def wak():
            
         else:
              print("nothing")'''
-INITIAL_TAP_THRESHOLD = 0.5
+INITIAL_TAP_THRESHOLD = 0.3
 FORMAT = pyaudio.paInt16
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -132,10 +130,9 @@ INPUT_FRAMES_PER_BLOCK = int(RATE*INPUT_BLOCK_TIME)
 OVERSENSITIVE = 15.0/INPUT_BLOCK_TIME                    
 UNDERSENSITIVE = 120.0/INPUT_BLOCK_TIME 
 MAX_TAP_BLOCKS = 0.15/INPUT_BLOCK_TIME
-openai.api_key = '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'
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voices',voices[2].id)
+engine.setProperty('voices',voices[1].id)
 def get_rms( block ):
     count = len(block)/2
     format = "%dh"%(count)
@@ -233,23 +230,17 @@ def wishMe():
     
     if hour>=0 and hour<12:
         tim = datetime.datetime.now().strftime("%I %M %p ")
-        speak("hlo boss how are you feeling today")
-        speak(f"its {tim}")
-        speak("wese good morning")
-        speak("what you want to do today")
-
+        speak("welcome back, boss")
+        speak(f"its {tim} good morning")
     elif hour>=12 and hour<16:
         tim = datetime.datetime.now().strftime("%I %M %p")
-        speak("hlo boss how your day is going")
+        speak("hlo boss  welcome back")
         speak(f"its {tim}")
-        speak("wese goodafternoon")
         speak("any task booss")
-        
-
     elif hour>=16 and hour<19:
         time = datetime.datetime.now().strftime("%I %M %p ")
-        speak(f"welcome boss its{time}")
-        speak("wese good evening")
+        speak(f"welcome boss its{time} good evening")
+        
     elif hour>=19 and hour<23:
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"welcome boss its{time}")
@@ -264,7 +255,7 @@ def takecommand():
         print("listening....................")
         #speak("yes sir speak")
         r.pause_threshold = 7
-        audio = r.listen(source,0,7)
+        audio = r.listen(source,0,9)
 
         try:
             print(" recognisinging ")
@@ -272,10 +263,11 @@ def takecommand():
             query = r.recognize_google(audio,language='en-in')
             print(f"you:{query}")
         except Exception as e:
-             speak("please speak again boss ............")   
+             speak(" boss ............")   
              print("please speak again............")
              return "None"
         return query
+openai.api_key = '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'
 def ai(prompt,open_ai = None):
     Filelog = open("open_ai.txt","r")   
     chat_log_template = Filelog.read()
@@ -286,8 +278,8 @@ def ai(prompt,open_ai = None):
     response = openai.Completion.create(
         engine="text-davinci-003",  # Use the text-davinci-003 engine for ChatGPT
         prompt=prompt,
-        max_tokens=200  # Adjust max_tokens as needed
-)
+        max_tokens=3070                         # Adjust max_tokens as neede
+    )
     generated_text = response['choices'][0]['text']
     chat_log_template_update = chat_log_template + f"\n You: {prompt} \nJarvis :{generated_text}"
     Filelog = open("open_ai.txt","w")
@@ -296,19 +288,14 @@ def ai(prompt,open_ai = None):
     if 'what is your name ' in prompt:
         speak("my name is friday boss") 
         print("my name is friday boss")
-    elif 'how are you ' in prompt:
-        speak("i am fine boss what about you") 
-        print("my name is friday boss")
-    
+    elif  'goodbye' in prompt or 'bye-bye' in prompt or 'bye ' in prompt or 'so jao ' in prompt or 'soo jao ' in prompt or'band ho jao' in prompt:
+        speak("bye boss but i am always with you") 
+        exit()
     else:
         pass
     print(generated_text)
+    
     speak(f"yes{generated_text} ")
-    t = takecommand().lower()
-    if 'speak'in t or 'bolo' in t or 'bol' in t:
-        speak("hi")
-    else:
-        pass
 def secs2hours(secs):
     mm, ss = divmod(secs, 60)
     hh, mm = divmod(mm, 60)
@@ -322,11 +309,24 @@ def location():
     country = geo_d['country']
     speak(f"sir you are in{state,country}")
     print(f"sir you are in{state,country}")
+'''def translation(Text):
+    line = str(Text)
+    translate = Translator()
+    results = translate.translate(line,str = 'en')
+    data = results.text
+    print(f"youum: {data}")
+    return data
+def mictan():
+    query = takecommand().lower()
+    data = translation(query)
+    speak(data) 
+    return data
+    '''
 if __name__ == "__main__": 
-    wishMe()
+    wishMe()   
     while  True:
         query = takecommand().lower()
-        if 'wikipedia' in query or 'tell me ' in query:
+        if 'wikipedia' in query:
             speak('searching...')
             query = query.replace("wikipedia","")
             query = query.replace("tell me about","")
@@ -343,9 +343,11 @@ if __name__ == "__main__":
             query = query.replace("friday","")  
             query = query.replace("Friday","") 
             ai(prompt=query)
-        elif 'google ' in query:       
+        elif 'google ' in query or'show ' in query or'dikhao' in query  or'dikhna' in query:       
             query = query.replace("jarvis","")
+            query = query.replace("show that","")
             query = query.replace("google search","")
+            query = query.replace("show me","")
             query = query.replace("google","")
             query = query.replace("kro","")
             query = query.replace("karo","")
@@ -388,9 +390,6 @@ if __name__ == "__main__":
             speak("good bye boss you can call me anytime ")
             speak("bye bye ")
             break
-        elif 'youtube open' in query:
-            webbrowser.open("youtube.com")
-            speak("ok now sir ")  
         elif ' play  sad song' in query:
             webbrowser.open("https://youtu.be/lyOo1MZawU0?si=5_DUaA7GEOYVRyho") 
             speak("playing song")
@@ -438,7 +437,7 @@ if __name__ == "__main__":
         elif 'gmail ' in query:
             webbrowser.open("gmail.com")
             speak("ok now sir ") 
-        elif '  papa ko message ' in query:  
+        elif 'papa ko message ' in query:  
              num = '+918437493081' 
              speak("What do you want to say?")
              message = takecommand().lower()
@@ -458,7 +457,7 @@ if __name__ == "__main__":
              speak("Sending Message.")
              pywhatkit.sendwhatmsg(num, message, hour__,minute__)  
              speak(f"done boss message sent to{num} ")
-        elif  'plan' in query:
+        elif 'plan' in query:
             webbrowser.open("https://www.notion.so/School-jee-framewok-7a58dbfbbfe141fe96a7663db2619bfd")
             speak("tanish boss plan your day")          
         elif 'coding time' in query:
@@ -478,10 +477,10 @@ if __name__ == "__main__":
         elif 'what is your name ' in query:
             speak("my name is jarvis boss") 
             print("my name is jarvis boss")
-        elif 'how are you ' in query:
+        elif 'how are you friday ' in query:
             speak("i am fine boss what about you") 
             print("my name is friday boss")  
-        elif 'charge' in query or 'power' in query or 'jann' in query or 'jan' in query: 
+        elif 'charge' in query or 'power' in query or 'jann' in query or 'batery' in query or 'jan' in query: 
             battery = psutil.sensors_battery()
             plugged = battery.power_plugged
             percent = int(battery.percent) 
@@ -492,22 +491,26 @@ if __name__ == "__main__":
             if percent > 45:
                 speak("boss its your choice t charge me but i can survive  "+ time_left)
             else:
-                speak("don't worry sir, charger is connected")    
-        elif "hi" in query or 'how are you' in query or 'hlo' in query:
-            stMsgs = ['Just doing my thing!', 'I am fine !', 'Nice !', 'I am nice and full of energy','i am weel what about you boss','thank you for asking but i am always fell energetic ']
-            speak(random.choice(stMsgs))   
+                speak("don't worry sir, charger is connected")       
         elif 'name'  in query:
             speak('My name is JARVIS boss')
         elif 'who made you' in query:
             speak ("I was created by Mr.Tanish sharma")
         elif "mark 2" in query or "mark two" in query or "mark-2" in query:
-            speak("voice activation required")
+            speak("voice activation required boss")
             e_passcode = takecommand().lower()
             v_passcode = "iron man"
             if e_passcode == v_passcode:
                 speak("acess granted")
-                speak("Welcome! Mr.Tanish")
+                speak("Welcome back! Mr.Tanish")
                 webbrowser.open("https://github.com/tanishtirpathi/JARVIS/blob/main/friday_ai.py") 
+                speak("boss i'm saving the progress")
+                ol =takecommand().lower()
+                if 'ok'in ol or 'thik hai 'in ol or 'yes' in ol: 
+                    speak("saving...............")
+                    speak("thank you sir for your permission")  
+                else:
+                    speak("ok sir as your wish boss")       
             else:
                 speak("access decline")
         elif 'alarm' in query:
@@ -672,8 +675,16 @@ if __name__ == "__main__":
                 pass          
         elif 'full screen' in query:
             keyboard.press('f')
+        elif 'type'in query:
+            query.replace("jarvis","")
+            query.replace("type","")
+            query.replace("kro","")
+            keyboard.write(query)
+        else:
+            query = query.replace("jarvis","") 
+            ai(prompt=query)
 '''
-def wolfram(query):
+  def wolfram(query):
     api_key = "TL4UQG-TQLVJ6RWY4"   
     requester = wolframalpha.Client(api_key)
     requested = requester.query(query)
@@ -682,7 +693,7 @@ def wolfram(query):
         return answer
     except:
         speak("this is not answer able")
-def temp(query):
+  def temp(query):
     term = str(query)
     term = term.replace("jarvis","") 
     term = term.replace("temperature","") 
@@ -736,16 +747,7 @@ elif' email send' in query:
         elif 'closed' in query:
             from dict import closedappweb 
             closedappweb(query) 
-def translation(Text):
-    line = str(Text)
-    translate = Translator()
-    results = translate.translate(line,str = 'en')
-    data = results.text
-    print(f"you : {data}")
-    return data
-def micconnect():
-    query = takecommand().lower()
-    data = translation(query)
+lation(query)
     return data               
 def sendEmail(to,content):
     server = smtplib.SMTP('smtp.gmail.com',535)
@@ -793,6 +795,8 @@ speak("please speak the password to start me ")
                 timeout = 50)
            '''
 
+   
+   
    
    
    
