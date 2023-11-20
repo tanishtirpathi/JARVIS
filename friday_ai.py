@@ -3,6 +3,7 @@ import speech_recognition as sr
 import wikipedia
 import datetime
 import webbrowser
+
 import pyaudio      
 import struct
 import math
@@ -120,7 +121,7 @@ def wak():
            
         else:
              print("nothing")'''
-INITIAL_TAP_THRESHOLD = 0.3
+INITIAL_TAP_THRESHOLD = 0.5
 FORMAT = pyaudio.paInt16
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -132,7 +133,10 @@ UNDERSENSITIVE = 120.0/INPUT_BLOCK_TIME
 MAX_TAP_BLOCKS = 0.15/INPUT_BLOCK_TIME
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
-engine.setProperty('voices',voices[1].id)
+engine.setProperty('voices',voices[0].id)
+engne = pyttsx3.init('sapi5')
+voices = engne.getProperty('voices')
+engne.setProperty('voices',voices[1].id)
 def get_rms( block ):
     count = len(block)/2
     format = "%dh"%(count)
@@ -222,9 +226,30 @@ def Tester():
             print("Hi welcome Mr Tanish " )
             break
 Tester()
+def takecommand():  
+       r = sr.Recognizer()
+       with sr.Microphone() as source:
+        print("listening....................")
+        #speak("yes sir speak")
+        r.pause_threshold = 7
+        audio = r.listen(source,0,9)
+
+        try:
+            print(" recognisinging ")
+           # speak("wait sir")   
+            query = r.recognize_google(audio,language='en-in')
+            print(f"you:{query}")
+        except Exception as e:
+             speak(" boss ............")   
+             print("please speak again............")
+             return "None"
+        return query
 def speak(audio):
    engine.say(audio)
    engine.runAndWait()
+def seak(audio):
+   engne.say(audio)
+   engne.runAndWait()
 def wishMe():
     hour = int(datetime.datetime.now().hour)
     
@@ -249,25 +274,7 @@ def wishMe():
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"hlo welcome boss its {time}")
         speak("i think its time for your sleep")      
-def takecommand():  
-       r = sr.Recognizer()
-       with sr.Microphone() as source:
-        print("listening....................")
-        #speak("yes sir speak")
-        r.pause_threshold = 7
-        audio = r.listen(source,0,9)
-
-        try:
-            print(" recognisinging ")
-           # speak("wait sir")   
-            query = r.recognize_google(audio,language='en-in')
-            print(f"you:{query}")
-        except Exception as e:
-             speak(" boss ............")   
-             print("please speak again............")
-             return "None"
-        return query
-openai.api_key = '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'
+openai.api_key = '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'
 def ai(prompt,open_ai = None):
     Filelog = open("open_ai.txt","r")   
     chat_log_template = Filelog.read()
@@ -295,7 +302,7 @@ def ai(prompt,open_ai = None):
         pass
     print(generated_text)
     
-    speak(f"yes{generated_text} ")
+    seak(f"yes{generated_text} ")
 def secs2hours(secs):
     mm, ss = divmod(secs, 60)
     hh, mm = divmod(mm, 60)
@@ -309,6 +316,28 @@ def location():
     country = geo_d['country']
     speak(f"sir you are in{state,country}")
     print(f"sir you are in{state,country}")
+
+'''def create_presentation(presentation, title, content):
+    slide_layout = presentation.slide_layouts[0]  # Use the title slide layout
+
+    slide = presentation.slides.add_slide(slide_layout)
+    title_placeholder = slide.shapes.title
+    content_placeholder = slide.placeholders[1]
+
+    title_placeholder.text = title
+    content_placeholder.text = content
+elif "create presentation" in query:
+            speak("What should be the title of the presentation?")
+            title = takecommand()
+            if title:
+                speak("What should be the content of the first slide?")
+                content = takecommand()
+            if content:
+                create_presentation(presentation, title, content)
+                speak("Presentation created successfully!")
+# Main loop
+presentation = Presentation()
+'''
 '''def translation(Text):
     line = str(Text)
     translate = Translator()
@@ -322,6 +351,8 @@ def mictan():
     speak(data) 
     return data
     '''
+
+    
 if __name__ == "__main__": 
     wishMe()   
     while  True:
@@ -362,8 +393,11 @@ if __name__ == "__main__":
                 print(result)
             except: 
                   speak("No Speakable Data Available!")
-        elif 'location' in query:
+        elif 'location' in query:       
             location()
+        
+        elif 'api key' in query:
+            webbrowser.open("https://platform.openai.com/api-keys")
         elif 'lock' in query:
             speak('As You Wish')
             ctypes.windll.user32.LockWorkStation()
@@ -681,8 +715,13 @@ if __name__ == "__main__":
             query.replace("kro","")
             keyboard.write(query)
         else:
-            query = query.replace("jarvis","") 
+            query.replace("jarvis","")
             ai(prompt=query)
+            
+      
+''' else:
+            query = query.replace("jarvis","") 
+            ai(prompt=query)'''
 '''
   def wolfram(query):
     api_key = "TL4UQG-TQLVJ6RWY4"   
@@ -795,6 +834,7 @@ speak("please speak the password to start me ")
                 timeout = 50)
            '''
 
+   
    
    
    
