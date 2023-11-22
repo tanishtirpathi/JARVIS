@@ -28,6 +28,7 @@ import random
 import wikipedia as googleScrap
 import smtplib
 import requests
+from bs4 import BeautifulSoup
 from googletrans import Translator
 from time import sleep
 '''
@@ -106,7 +107,7 @@ def wake():
             print(" recognisinging ")
            # speak("wait sir")   
             query = r.recognize_google(audio,language='en-in')
-            print(f"you:{query}")
+            print(f"you:{query}")PyWhatKit_DB.txt
         except Exception as e:
              #speak("please speak again boss ............")   
              print("please speak again............")
@@ -274,7 +275,7 @@ def wishMe():
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"hlo welcome boss its {time}")
         speak("i think its time for your sleep")      
-openai.api_key = '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'
+openai.api_key = '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'
 def ai(prompt,open_ai = None):
     Filelog = open("open_ai.txt","r")   
     chat_log_template = Filelog.read()
@@ -316,7 +317,6 @@ def location():
     country = geo_d['country']
     speak(f"sir you are in{state,country}")
     print(f"sir you are in{state,country}")
-
 '''def create_presentation(presentation, title, content):
     slide_layout = presentation.slide_layouts[0]  # Use the title slide layout
 
@@ -350,9 +350,7 @@ def mictan():
     data = translation(query)
     speak(data) 
     return data
-    '''
-
-    
+    '''  
 if __name__ == "__main__": 
     wishMe()   
     while  True:
@@ -394,8 +392,7 @@ if __name__ == "__main__":
             except: 
                   speak("No Speakable Data Available!")
         elif 'location' in query:       
-            location()
-        
+            location()       
         elif 'api key' in query:
             webbrowser.open("https://platform.openai.com/api-keys")
         elif 'lock' in query:
@@ -424,6 +421,15 @@ if __name__ == "__main__":
             speak("good bye boss you can call me anytime ")
             speak("bye bye ")
             break
+        elif 'weather' in query or'temperature' in query or'mosam' in query  or'masom' in query:    
+            speak("speak the place sir")  
+            l=takecommand().lower()  
+            if 'outside 'in l or 'bhar ' in l or 'bhr' in l:
+                pywhatkit.search(f"weather today near Jhakhar Pindi, Punjab")
+                speak("see the weather boss ")
+            else:
+                pywhatkit.search(f"today weather in {l}")
+                speak(f"sir the weather in {l} is ")
         elif ' play  sad song' in query:
             webbrowser.open("https://youtu.be/lyOo1MZawU0?si=5_DUaA7GEOYVRyho") 
             speak("playing song")
@@ -632,7 +638,7 @@ if __name__ == "__main__":
             Remember = open("Remember.txt","w")
             Remember.write(rememberMsg)
             Remember.close()        
-        elif 'start'in query or 'open' in query or'visit'in query:
+        elif 'start'in query or'visit'in query:
             name = query.replace("start",'')
             query.replace("jarvis","")
             query.replace("open","")
@@ -716,13 +722,12 @@ if __name__ == "__main__":
             keyboard.write(query)
         else:
             query.replace("jarvis","")
-            ai(prompt=query)
-            
-      
-''' else:
-            query = query.replace("jarvis","") 
-            ai(prompt=query)'''
+            ai(prompt=query)     
 '''
+else:
+            query = query.replace("jarvis","") 
+            ai(prompt=query)
+
   def wolfram(query):
     api_key = "TL4UQG-TQLVJ6RWY4"   
     requester = wolframalpha.Client(api_key)
@@ -834,9 +839,6 @@ speak("please speak the password to start me ")
                 timeout = 50)
            '''
 
-   
-   
-   
    
    
    
