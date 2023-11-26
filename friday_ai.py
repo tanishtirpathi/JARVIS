@@ -122,7 +122,7 @@ def wak():
            
         else:
              print("nothing")'''
-INITIAL_TAP_THRESHOLD = 0.5
+INITIAL_TAP_THRESHOLD = 0.2
 FORMAT = pyaudio.paInt16
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -275,7 +275,7 @@ def wishMe():
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"hlo welcome boss its {time}")
         speak("i think its time for your sleep")      
-openai.api_key = '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'
+openai.api_key = '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'
 def ai(prompt,open_ai = None):
     Filelog = open("open_ai.txt","r")   
     chat_log_template = Filelog.read()
@@ -308,49 +308,6 @@ def secs2hours(secs):
     mm, ss = divmod(secs, 60)
     hh, mm = divmod(mm, 60)
     return "%dhour, %02d minute, %02s seconds" % (hh, mm, ss)
-def location():
-    ip_add = requests.get('http://api.ipify.org').text
-    url = 'http://get.geojs.io/v1/ip/geo/' + ip_add + '.json'
-    geo_q = requests.get(url)
-    geo_d = geo_q.json()
-    state = geo_d['city']
-    country = geo_d['country']
-    speak(f"sir you are in{state,country}")
-    print(f"sir you are in{state,country}")
-'''def create_presentation(presentation, title, content):
-    slide_layout = presentation.slide_layouts[0]  # Use the title slide layout
-
-    slide = presentation.slides.add_slide(slide_layout)
-    title_placeholder = slide.shapes.title
-    content_placeholder = slide.placeholders[1]
-
-    title_placeholder.text = title
-    content_placeholder.text = content
-elif "create presentation" in query:
-            speak("What should be the title of the presentation?")
-            title = takecommand()
-            if title:
-                speak("What should be the content of the first slide?")
-                content = takecommand()
-            if content:
-                create_presentation(presentation, title, content)
-                speak("Presentation created successfully!")
-# Main loop
-presentation = Presentation()
-'''
-'''def translation(Text):
-    line = str(Text)
-    translate = Translator()
-    results = translate.translate(line,str = 'en')
-    data = results.text
-    print(f"youum: {data}")
-    return data
-def mictan():
-    query = takecommand().lower()
-    data = translation(query)
-    speak(data) 
-    return data
-    '''  
 if __name__ == "__main__": 
     wishMe()   
     while  True:
@@ -381,7 +338,7 @@ if __name__ == "__main__":
             query = query.replace("kro","")
             query = query.replace("karo","")
             query = query.replace("kardo","")
-            query = query.replace("krodo","")
+            query = query.replace("krodo","")   
             query = query.replace("about","")
             speak("This Is What I Found On The Web!")   
             pywhatkit.search(query)
@@ -390,14 +347,13 @@ if __name__ == "__main__":
                 speak(result)
                 print(result)
             except: 
-                  speak("No Speakable Data Available!")
-        elif 'location' in query:       
-            location()       
+                  speak("No Speakable Data Available!")    
         elif 'api key' in query:
             webbrowser.open("https://platform.openai.com/api-keys")
         elif 'lock' in query:
             speak('As You Wish')
             ctypes.windll.user32.LockWorkStation()
+            exit()
         elif 'website open'in query:
             speak("booss which website i have to open ") 
             name = takecommand().lower()
@@ -702,7 +658,7 @@ if __name__ == "__main__":
             speak("boss file name ")
             k = takecommand().lower()
             path = k + '.png'
-            path1 = "C:\\jarvis ke kiche hua screenshot\\"+path
+            path1 = "jarvis ke kiche hua screenshot"+path
             kk = pyautogui.screenshot()
             speak("ok boss")
             kk.save(path1)
@@ -724,6 +680,39 @@ if __name__ == "__main__":
             query.replace("jarvis","")
             ai(prompt=query)     
 '''
+
+def create_presentation(presentation, title, content):
+    slide_layout = presentation.slide_layouts[0]  # Use the title slide layout
+
+    slide = presentation.slides.add_slide(slide_layout)
+    title_placeholder = slide.shapes.title
+    content_placeholder = slide.placeholders[1]
+
+    title_placeholder.text = title
+    content_placeholder.text = content
+elif "create presentation" in query:
+            speak("What should be the title of the presentation?")
+            title = takecommand()
+            if title:
+                speak("What should be the content of the first slide?")
+                content = takecommand()
+            if content:
+                create_presentation(presentation, title, content)
+                speak("Presentation created successfully!")
+# Main loop
+presentation = Presentation()
+def translation(Text):
+    line = str(Text)
+    translate = Translator()
+    results = translate.translate(line,str = 'en')
+    data = results.text
+    print(f"youum: {data}")
+    return data
+def mictan():
+    query = takecommand().lower()
+    data = translation(query)
+    speak(data) 
+    return data
 else:
             query = query.replace("jarvis","") 
             ai(prompt=query)
@@ -838,10 +827,3 @@ speak("please speak the password to start me ")
                 message = content,
                 timeout = 50)
            '''
-
-   
-   
-   
-   
-   
-   
