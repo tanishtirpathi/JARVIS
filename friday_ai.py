@@ -227,12 +227,30 @@ def Tester():
             print("Hi welcome Mr Tanish " )
             break
 Tester()
+def take():  
+       r = sr.Recognizer()
+       with sr.Microphone() as source:
+        print("listening....................")
+        #speak("yes sir speak")
+        r.pause_threshold = 2
+        audio = r.listen(source,0,6)
+
+        try:
+            print(" recognisinging ")
+           # speak("wait sir")   
+            query = r.recognize_google(audio,language='en-in')
+            print(f"you:{query}")
+        except Exception as e:
+             speak(" boss ............")   
+             print("please speak again............")
+             return "None"
+        return query
 def takecommand():  
        r = sr.Recognizer()
        with sr.Microphone() as source:
         print("listening....................")
         #speak("yes sir speak")
-        r.pause_threshold = 7
+        r.pause_threshold = 2
         audio = r.listen(source,0,9)
 
         try:
@@ -275,9 +293,9 @@ def wishMe():
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"hlo welcome boss its {time}")
         speak("i think its time for your sleep")      
-openai.api_key = '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'
+openai.api_key = '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'
 def ai(prompt,open_ai = None):
-    Filelog = open("open_ai.txt","r")   
+    Filelog = open("jarvis app backup\open_ai.txt","r")   
     chat_log_template = Filelog.read()
     Filelog.close()
     if open_ai is None:
@@ -290,7 +308,7 @@ def ai(prompt,open_ai = None):
     )
     generated_text = response['choices'][0]['text']
     chat_log_template_update = chat_log_template + f"\n You: {prompt} \nJarvis :{generated_text}"
-    Filelog = open("open_ai.txt","w")
+    Filelog = open("jarvis app backup\open_ai.txt","w")
     Filelog.write(chat_log_template_update)
     Filelog.close()
     if 'what is your name ' in prompt:
@@ -311,6 +329,7 @@ def secs2hours(secs):
 if __name__ == "__main__": 
     wishMe()   
     while  True:
+        era = take().lower()
         query = takecommand().lower()
         if 'wikipedia' in query:
             speak('searching...')
@@ -492,13 +511,12 @@ if __name__ == "__main__":
             speak('My name is JARVIS boss')
         elif 'who made you' in query:
             speak ("I was created by Mr.Tanish sharma")
-        elif "mark 2" in query or "mark two" in query or "mark-2" in query:
+        elif "mark 2" in query or "mark two" in query or "mark-2" in query  or "mark to" in query:
             speak("voice activation required boss")
             e_passcode = takecommand().lower()
             v_passcode = "iron man"
             if e_passcode == v_passcode:
-                speak("acess granted")
-                speak("Welcome back! Mr.Tanish")
+                speak("acess granted!, Welcome back! Mr.Tanish")
                 webbrowser.open("https://github.com/tanishtirpathi/JARVIS/blob/main/friday_ai.py") 
                 speak("boss i'm saving the progress")
                 ol =takecommand().lower()
@@ -581,7 +599,7 @@ if __name__ == "__main__":
         elif 'thank you'in query or 'thanks 'in query or 'thank u' in query:
             speak("mention not sir ")  
             speak("you are my boss its my duty")     
-        elif 'remember that' in query or 'note' in query or 'yad ' in query or 'yadev' in query or 'yadav ' in query  or'not' in query:
+        elif 'remember that' in era or 'note' in era or 'yad ' in era or 'yadev' in era or 'yadav ' in era  or'not' in era:
             rememberMsg = query.replace("remember that","")
             rememberMsg = rememberMsg.replace("jarvis","")
             rememberMsg = rememberMsg.replace("note","")
@@ -593,7 +611,16 @@ if __name__ == "__main__":
             speak("youtell me to remember that:"+rememberMsg)
             Remember = open("Remember.txt","w")
             Remember.write(rememberMsg)
-            Remember.close()        
+            Remember.close()   
+        elif 'active' in query or 'system' in query:    
+            speak("start destroying the system")
+            keyboard.press('F11')
+            keyboard.write("color a") 
+            keyboard.press('enter')  
+            keyboard.write("dir /s")  
+            keyboard.press('enter')      
+            speak("sir work in progress")
+            break  
         elif 'start'in query or'visit'in query:
             name = query.replace("start",'')
             query.replace("jarvis","")
@@ -616,9 +643,9 @@ if __name__ == "__main__":
             speak("yes boss")
             speak("you tell me to remember that"+Remember.read())
             print(f"yes{Remember}")
-        elif 'good morning ' in query:
+        elif 'good morning' in query:
             speak("a very good morning sir")
-            webbrowser.open("https://youtu.be/oCD5iPDjMgw?si=0mwxnldhyXhBN26n")
+            webbrowser.open("https://youtu.be/xJ3vatsNQDU?si=WXGj6sWt2VM6Zff5")
         elif 'good afternoon ' in query:
             speak(" its a very good day sir")
         elif 'good evening ' in query:
@@ -627,19 +654,27 @@ if __name__ == "__main__":
             speak(" i hope you already have plan for next day")
             sht = takecommand().lower()
             if sht == "yes":
+                webbrowser.open("https://youtu.be/xJ3vatsNQDU?si=WXGj6sWt2VM6Zff5")
                 speak("ok boss shut down the system")
                 os.system("shutdown /s /t 1")
             elif  sht == "no":
                 speak("ok fine boss i will help you ")
                 webbrowser.open("https://www.notion.so/School-jee-framewok-7a58dbfbbfe141fe96a7663db2619bfd") 
+                webbrowser.open("https://youtu.be/xJ3vatsNQDU?si=WXGj6sWt2VM6Zff5")
             else:
-                speak("i did not understand please speak again  `")
+                webbrowser.open("https://youtu.be/xJ3vatsNQDU?si=WXGj6sWt2VM6Zff5")
         elif 'shutdown' in query:
             speak("ok boss fine")
+            speak("three")
+            speak("two")
+            speak("one")
             os.system("shutdown /s /t 1")
         elif 'restart' in query:
             speak("ok boss restart the pc ")
-            os.system("shutdown /r /t 3")
+            speak("three")
+            speak("two")
+            speak("one")
+            os.system("shutdown /r /t 1")
         elif 'sleep' in query:
             speak("as your wish sir")
             os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
