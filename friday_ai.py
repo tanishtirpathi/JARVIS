@@ -122,7 +122,7 @@ def wak():
            
         else:
              print("nothing")'''
-INITIAL_TAP_THRESHOLD = 0.2
+INITIAL_TAP_THRESHOLD = 0.5
 FORMAT = pyaudio.paInt16
 SHORT_NORMALIZE = (1.0/32768.0)
 CHANNELS = 2
@@ -224,7 +224,7 @@ def Tester():
     while True:
         kk = tt.listen()
         if "True-Mic" == kk:
-            print("Hi welcome Mr Tanish " )
+            print("Hi ! sir my name is JARVIS A virtual assistant your welcome Mr Tanish " )
             break
 Tester()
 def take():  
@@ -246,23 +246,32 @@ def take():
              return "None"
         return query
 def takecommand():  
-       r = sr.Recognizer()
+       r = sr.Recognizer()   
        with sr.Microphone() as source:
-        print("listening....................")
+        #print("listening....................")
         #speak("yes sir speak")
-        r.pause_threshold = 2
-        audio = r.listen(source,0,9)
+        #r.pause_threshold = 1
+       # audio = r.listen(source,0,9)
+        print('Listening........................')
+        r.pause_threshold = 1
+       # r.energy_threshold = 494
+        r.adjust_for_ambient_noise(source, duration=1.5)
+        audio = r.listen(source)
 
         try:
             print(" recognisinging ")
            # speak("wait sir")   
             query = r.recognize_google(audio,language='en-in')
+            print(" ")
             print(f"you:{query}")
+            print(" ")
+            print("JARVIS :- ")
+            return query
         except Exception as e:
-             speak(" boss ............")   
+             speak(" b.....")   
              print("please speak again............")
-             return "None"
-        return query
+             return "some internet issue boss please forgive me"
+        
 def speak(audio):
    engine.say(audio)
    engine.runAndWait()
@@ -293,7 +302,7 @@ def wishMe():
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"hlo welcome boss its {time}")
         speak("i think its time for your sleep")      
-openai.api_key = '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'
+openai.api_key = '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  '
 def ai(prompt,open_ai = None):
     Filelog = open("jarvis app backup\open_ai.txt","r")   
     chat_log_template = Filelog.read()
@@ -366,14 +375,31 @@ if __name__ == "__main__":
                 speak(result)
                 print(result)
             except: 
-                  speak("No Speakable Data Available!")    
+                  speak("No Speakable Data Available!") 
+        elif 'vedio'in query or 'video'in query:
+            speak('ok nice starting video diary')
+            vb ='jarvis app backup\\Fast Screen Recorder.lnk'
+            os.startfile(vb)
+            keyboard.press_and_release('ctrl+shift+Z')
+            speak('work done sir')
+        elif 'stop' in query:
+            speak("pause sir")
+            keyboard.press_and_release('ctrl+shift+N')
+        elif 'close all tab' in query:
+            speak("ok sir as your wish")
+            keyboard.press_and_release('ctrl+shift+w')   
+        elif 'close tab' in query:
+            speak("ok sir as your wish")
+            keyboard.press_and_release('ctrl+w')
+        elif 'camera'in query:
+            os.startfile("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Iriun Webcam")
         elif 'api key' in query:
             webbrowser.open("https://platform.openai.com/api-keys")
         elif 'lock' in query:
             speak('As You Wish')
             ctypes.windll.user32.LockWorkStation()
             exit()
-        elif 'website open'in query:
+        elif 'website'in query:
             speak("booss which website i have to open ") 
             name = takecommand().lower()
             we = 'https://www.' + name +'.com'
@@ -476,7 +502,7 @@ if __name__ == "__main__":
             webbrowser.open("https://www.notion.so/School-jee-framewok-7a58dbfbbfe141fe96a7663db2619bfd")
             speak("tanish boss plan your day")          
         elif 'coding time' in query:
-            e= "Visual Studio Code.lnk"
+            e= "jarvis app backup\\Visual Studio Code.lnk"
             os.startfile(e)    
             speak("opening vs code") 
         elif 'my day ' in query:
@@ -495,7 +521,7 @@ if __name__ == "__main__":
         elif 'how are you friday ' in query:
             speak("i am fine boss what about you") 
             print("my name is friday boss")  
-        elif 'charge' in query or 'power' in query or 'jann' in query or 'batery' in query or 'jan' in query: 
+        elif 'charge' in query or 'power' in query or 'jaan' in query or 'batery' in query or 'jan' in query: 
             battery = psutil.sensors_battery()
             plugged = battery.power_plugged
             percent = int(battery.percent) 
@@ -615,7 +641,7 @@ if __name__ == "__main__":
         elif 'active' in query or 'system' in query:    
             speak("start destroying the system")
             keyboard.press('F11')
-            keyboard.write("color a") 
+            keyboard.write("color 4") 
             keyboard.press('enter')  
             keyboard.write("dir /s")  
             keyboard.press('enter')      
