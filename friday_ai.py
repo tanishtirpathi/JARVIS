@@ -3,7 +3,7 @@ import speech_recognition as sr
 import wikipedia
 import datetime
 import webbrowser
-
+from bardapi import Bard
 import pyaudio      
 import struct
 import math
@@ -245,6 +245,21 @@ def take():
              print("please speak again............")
              return "None"
         return query
+
+
+def get_response_from_bard(prompt):
+  try:
+    response = bard_api.query(prompt)
+    return response.text
+  except Exception as e:
+    print("Error accessing Bard:", e)
+    return "Sorry, I'm having trouble connecting to Bard right now."
+
+# In your voice assistant's main loop:
+user_input = take().lower()
+response_text = get_response_from_bard(user_input)
+speak(response_text)
+
 def takecommand():  
        r = sr.Recognizer()   
        with sr.Microphone() as source:
