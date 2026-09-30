@@ -317,7 +317,8 @@ def wishMe():
         time = datetime.datetime.now().strftime("%I %M %p ")
         speak(f"hlo welcome boss its {time}")
         speak("i think its time for your sleep")      
-openai.api_key = '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  '
+openai.api_key = ""
+
 def ai(prompt,open_ai = None):
     Filelog = open("jarvis app backup\open_ai.txt","r")   
     chat_log_template = Filelog.read()
