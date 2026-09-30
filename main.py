@@ -143,7 +143,7 @@ def speak(audio):
      engine.runAndWait()
 def ai():
     
-    GOOGLE_API_KEY ='AIzaSyD7xVt7D1G97UqCeuWaQF5g-2IjTrP_D8Q'
+    GOOGLE_API_KEY =''
     genai.configure(api_key=GOOGLE_API_KEY) 
      
     gernation_config = {
